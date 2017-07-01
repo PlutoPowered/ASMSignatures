@@ -1,0 +1,51 @@
+//Plugins
+plugins {
+    id "net.ltgt.apt" version "0.10"
+    id "com.github.johnrengelman.shadow" version "2.0.1"
+}
+
+apply plugin : 'java'
+apply plugin : 'maven'
+apply plugin : 'idea'
+//End Plugins
+
+//Program Specific Variables
+def programVersion = "0.0.1"
+def programGroup = "com.gmail.socraticphoenix"
+//End Variables
+
+//Gradle Variables
+group = "$programGroup"
+version = "$programVersion"
+sourceCompatibility = 1.8
+//End Gradle Variables
+
+//Repositories and Dependencies
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    compile "org.ow2.asm:asm-debug-all:5.2"
+}
+//End Repositories and Dependencies
+
+//Tasks
+task sourceJar(type: Jar) {
+    classifier = "source"
+    from sourceSets.main.allJava
+}
+
+task javadocJar(type: Jar, dependsOn: javadoc){
+    classifier = "javadoc"
+    from javadoc.destinationDir
+}
+
+javadoc {
+    destinationDir = file("docs")
+}
+
+shadowJar {
+    classifier = "shadow"
+}
+//End Tasks
