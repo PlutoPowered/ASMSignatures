@@ -1,0 +1,63 @@
+//Plugins
+plugins {
+    id 'com.jfrog.bintray' version '1.3.1'
+    id "net.ltgt.apt" version "0.10"
+}
+
+apply plugin : 'java'
+apply plugin : 'maven'
+apply plugin : 'idea'
+//End Plugins
+
+//Program Specific Variables (Fill these in)
+def programVersion = "0.0.0"
+def programGroup = "com.gmail.socraticphoenix"
+//End Variables
+
+//Gradle Variables
+group = "$programGroup"
+version = "$programVersion"
+sourceCompatibility = 1.8
+//End Gradle Variables
+
+//Shadow Configuration
+configurations {
+    shadow
+    compile.extendsFrom shadow
+}
+//End Shadow Configuration
+
+//Repositories and Dependencies (Fill these in)
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    compile "org.ow2.asm:asm-debug-all:5.2"
+}
+//End Repositories and Dependencies
+
+//Tasks
+task sourceJar(type: Jar) {
+    from sourceSets.main.allJava
+}
+
+task javadocJar(type: Jar, dependsOn: javadoc){
+    classifier = "javadoc"
+    from javadoc.destinationDir
+}
+
+task wrapper(type: Wrapper) {
+    gradleVersion = '2.2'
+    distributionUrl = "https://services.gradle.org/distributions/gradle-$gradleVersion-all.zip"
+}
+//End Tasks
+
+//Jar Configuration
+jar {
+    configurations.shadow.each { slice ->
+        from(project.zipTree(slice)) {
+        }
+    }
+}
+//End Jar Configuration
