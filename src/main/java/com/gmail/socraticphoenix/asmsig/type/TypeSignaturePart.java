@@ -38,8 +38,15 @@ public interface TypeSignaturePart {
     /**
      * @return True if this is a primitive type, false otherwise.
      */
-    default boolean primitive() {
+    default boolean isPrimitive() {
         return this instanceof TypeFill && Signatures.isPrimitive(((TypeFill) this).getType());
+    }
+
+    /**
+     * @return True if this is a long or double, false otherwise.
+     */
+    default boolean isTwoWords() {
+        return this.isPrimitive() && ((TypeFill) this).getType().getSize() == 2;
     }
 
     /**
