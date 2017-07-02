@@ -87,7 +87,7 @@ public class ClassSignatureBuilder {
      * @return This, for method chaining.
      */
     public ClassSignatureBuilder submitInterfaces(String... interfaces) {
-        if(this.listen) {
+        if(this.listen && interfaces != null) {
             for(String i : interfaces) {
                 this.signature.addInterface(new TypeFill(Type.getObjectType(i)));
             }

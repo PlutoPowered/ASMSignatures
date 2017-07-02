@@ -52,7 +52,7 @@ public class MethodSignatureBuilder {
      * @return This, for method chaining.
      */
     public MethodSignatureBuilder submitSignature(String signature) {
-        if(signature != null) {
+        if (signature != null) {
             this.signature = Signatures.parseMethod(signature);
             this.listen = false;
         }
@@ -67,11 +67,11 @@ public class MethodSignatureBuilder {
      * @return This, for method chaining.
      */
     public MethodSignatureBuilder submitDesc(String desc) {
-        if(this.listen) {
+        if (this.listen && desc != null) {
             Type type = Type.getMethodType(desc);
             this.signature.setReturn(new TypeFill(type.getReturnType()));
 
-            for(Type param : type.getArgumentTypes()) {
+            for (Type param : type.getArgumentTypes()) {
                 this.signature.addParameter(new TypeFill(param));
             }
         }
@@ -88,11 +88,9 @@ public class MethodSignatureBuilder {
      * @return This, for method chaining.
      */
     public MethodSignatureBuilder submitExceptions(String... exceptions) {
-        if(this.listen) {
-            if(exceptions != null) {
-                for (String exe : exceptions) {
-                    this.signature.addException(new TypeFill(Type.getObjectType(exe)));
-                }
+        if (this.listen && exceptions != null) {
+            for (String exe : exceptions) {
+                this.signature.addException(new TypeFill(Type.getObjectType(exe)));
             }
         }
 

@@ -68,7 +68,7 @@ public class TypeSignatureBuilder {
      * @return This, for method chaining.
      */
     public TypeSignatureBuilder submitDesc(String desc) {
-        if(this.listen) {
+        if(this.listen && desc != null) {
             this.type = new TypeFill(Type.getType(desc));
         }
 
@@ -83,7 +83,7 @@ public class TypeSignatureBuilder {
      * @return This, for method chaining.
      */
     public TypeSignatureBuilder submitInternal(String internalName) {
-        if(this.listen) {
+        if(this.listen && internalName != null) {
             this.type = new TypeFill(Type.getObjectType(internalName));
         }
 
