@@ -43,7 +43,7 @@ public class ClassSignatureBuilder {
      */
     public ClassSignatureBuilder() {
         this.signature = new ClassSignature(new TypeParameterized(Type.getType(Object.class)), new TypeFill(Type.getType(Object.class)));
-        this.listen = false;
+        this.listen = true;
     }
 
     /**
@@ -57,8 +57,8 @@ public class ClassSignatureBuilder {
     public ClassSignatureBuilder submitSignature(String name, String signature) {
         if(signature != null) {
             this.signature = Signatures.parseClass(name, signature);
+            this.listen = false;
         } else {
-            this.listen = true;
             this.signature.setType(Type.getObjectType(name));
         }
 
@@ -73,7 +73,7 @@ public class ClassSignatureBuilder {
      * @return This, for method chaining.
      */
     public ClassSignatureBuilder submitSuper(String superclass) {
-        if(this.listen) {
+        if(this.listen && superclass != null) {
             this.signature.setSuperclass(new TypeFill(Type.getObjectType(superclass)));
         }
         return this;

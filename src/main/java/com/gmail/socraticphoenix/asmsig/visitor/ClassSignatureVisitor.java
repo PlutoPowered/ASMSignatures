@@ -29,10 +29,15 @@ import org.objectweb.asm.Opcodes;
 import org.objectweb.asm.Type;
 import org.objectweb.asm.signature.SignatureVisitor;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * A {@link SignatureVisitor} which builds a {@link ClassSignature}.
  */
 public class ClassSignatureVisitor extends SignatureVisitor implements Opcodes {
+    private List<TypeSignatureVisitor> visitors;
+
     private ClassSignature signature;
     private TypeVar previous;
 
@@ -42,6 +47,7 @@ public class ClassSignatureVisitor extends SignatureVisitor implements Opcodes {
     public ClassSignatureVisitor() {
         super(ASM5);
         this.signature = new ClassSignature(new TypeParameterized(Type.getType(Object.class)), new TypeFill(Type.getType(Object.class)));
+        this.visitors = new ArrayList<>();
     }
 
     @Override
@@ -52,22 +58,35 @@ public class ClassSignatureVisitor extends SignatureVisitor implements Opcodes {
 
     @Override
     public SignatureVisitor visitClassBound() {
-        return new TypeSignatureVisitor(f -> this.previous.setClassBound(f));
+        return this.logAndReturn(new TypeSignatureVisitor(f -> this.previous.setClassBound(f)));
     }
 
     @Override
     public SignatureVisitor visitInterfaceBound() {
-        return new TypeSignatureVisitor(f -> this.previous.addInterBound(f));
+        return this.logAndReturn(new TypeSignatureVisitor(f -> this.previous.addInterBound(f)));
     }
 
     @Override
     public SignatureVisitor visitSuperclass() {
-        return new TypeSignatureVisitor(f -> this.signature.setSuperclass((TypeFill) f));
+        return this.logAndReturn(new TypeSignatureVisitor(f -> this.signature.setSuperclass((TypeFill) f)));
     }
 
     @Override
     public SignatureVisitor visitInterface() {
-        return new TypeSignatureVisitor(f -> this.signature.addInterface((TypeFill) f));
+        return this.logAndReturn(new TypeSignatureVisitor(f -> this.signature.addInterface((TypeFill) f)));
+    }
+
+    @Override
+    public void visitEnd() {
+        while (!this.visitors.isEmpty()) {
+            this.visitors.remove(0).visitFinish();
+        }
+        super.visitEnd();
+    }
+
+    private TypeSignatureVisitor logAndReturn(TypeSignatureVisitor visitor) {
+        this.visitors.add(visitor);
+        return visitor;
     }
 
     /**

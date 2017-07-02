@@ -30,6 +30,8 @@ import org.objectweb.asm.Opcodes;
 import org.objectweb.asm.Type;
 import org.objectweb.asm.signature.SignatureVisitor;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Stack;
 import java.util.function.Consumer;
 
@@ -37,7 +39,7 @@ import java.util.function.Consumer;
  * A {@link SignatureVisitor} which builds a {@link TypeInformal}.
  */
 public class TypeSignatureVisitor extends SignatureVisitor implements Opcodes {
-    private Stack<TypeSignatureVisitor> visitors;
+    private List<TypeSignatureVisitor> visitors;
 
     private Consumer<TypeInformal> end;
     private TypeInformal type;
@@ -51,7 +53,7 @@ public class TypeSignatureVisitor extends SignatureVisitor implements Opcodes {
         super(ASM5);
         this.end = end;
         this.type = new TypeFill(Type.getType(Object.class));
-        this.visitors = new Stack<>();
+        this.visitors = new ArrayList<>();
     }
 
     /**
@@ -109,10 +111,11 @@ public class TypeSignatureVisitor extends SignatureVisitor implements Opcodes {
         }
     }
 
-    @Override
-    public void visitEnd() {
+    public void visitFinish() {
+        //SignatureVisitor is very inconsistent with it's visitEnd calls, so we use a custom method
+        //and call when a type should be finished
         while (!this.visitors.isEmpty()) {
-            this.visitors.pop().visitEnd();
+            this.visitors.remove(0).visitFinish();
         }
 
         if(this.end != null) {
@@ -123,7 +126,7 @@ public class TypeSignatureVisitor extends SignatureVisitor implements Opcodes {
     }
 
     private TypeSignatureVisitor logAndReturn(TypeSignatureVisitor visitor) {
-        this.visitors.push(visitor);
+        this.visitors.add(visitor);
         return visitor;
     }
 

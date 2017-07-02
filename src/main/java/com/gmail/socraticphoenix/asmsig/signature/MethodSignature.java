@@ -30,10 +30,10 @@ import java.util.List;
 /**
  * Represents a method signature. Specifically, a method signature represents:
  * <ul>
- *     <li>The return type of a method</li>
- *     <li>The formal type parameters of a method (the generics)</li>
- *     <li>The types of the method's parameters</li>
- *     <li>The types of the exceptions the method declares as thrown</li>
+ * <li>The return type of a method</li>
+ * <li>The formal type parameters of a method (the generics)</li>
+ * <li>The types of the method's parameters</li>
+ * <li>The types of the exceptions the method declares as thrown</li>
  * </ul>
  */
 public class MethodSignature {
@@ -52,6 +52,24 @@ public class MethodSignature {
         this.generics = new ArrayList<>();
         this.paras = new ArrayList<>();
         this.exceptions = new ArrayList<>();
+    }
+
+    /**
+     * @return The formatted signature, as it would appear in bytecode.
+     */
+    public String write() {
+        StringBuilder builder = new StringBuilder();
+        if (!this.generics.isEmpty()) {
+            builder.append("<");
+            this.generics.forEach(t -> builder.append(t.write()));
+            builder.append(">");
+        }
+        builder.append("(");
+        this.paras.forEach(t -> builder.append(t.write()));
+        builder.append(")");
+        builder.append(this.ret.write());
+        this.exceptions.forEach(t -> builder.append("^").append(t.write()));
+        return builder.toString();
     }
 
     /**

@@ -76,8 +76,10 @@ public class TypeWild implements TypeSignaturePart, TypeInformal {
     public String write() {
         if(upper != null) {
             return "+" + this.upper.write();
-        } else {
+        } else if (this.lower != null) {
             return "-" + this.lower.write();
+        } else {
+            return "*";
         }
     }
 

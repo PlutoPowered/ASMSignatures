@@ -41,7 +41,7 @@ public class TypeSignatureBuilder {
      */
     public TypeSignatureBuilder() {
         this.type = new TypeFill(Type.getType(Object.class));
-        this.listen = false;
+        this.listen = true;
     }
 
     /**
@@ -54,8 +54,7 @@ public class TypeSignatureBuilder {
     public TypeSignatureBuilder submitSignature(String signature) {
         if(signature != null) {
             this.type = Signatures.parseType(signature);
-        } else {
-            this.listen = true;
+            this.listen = false;
         }
 
         return this;

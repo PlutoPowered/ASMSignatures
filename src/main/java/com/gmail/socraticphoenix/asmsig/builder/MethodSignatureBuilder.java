@@ -41,7 +41,7 @@ public class MethodSignatureBuilder {
      */
     public MethodSignatureBuilder() {
         this.signature = new MethodSignature(new TypeFill(Type.getType(void.class)));
-        this.listen = false;
+        this.listen = true;
     }
 
     /**
@@ -54,7 +54,6 @@ public class MethodSignatureBuilder {
     public MethodSignatureBuilder submitSignature(String signature) {
         if(signature != null) {
             this.signature = Signatures.parseMethod(signature);
-        } else {
             this.listen = false;
         }
         return this;
@@ -71,6 +70,7 @@ public class MethodSignatureBuilder {
         if(this.listen) {
             Type type = Type.getMethodType(desc);
             this.signature.setReturn(new TypeFill(type.getReturnType()));
+
             for(Type param : type.getArgumentTypes()) {
                 this.signature.addParameter(new TypeFill(param));
             }
@@ -89,8 +89,10 @@ public class MethodSignatureBuilder {
      */
     public MethodSignatureBuilder submitExceptions(String... exceptions) {
         if(this.listen) {
-            for(String exe : exceptions) {
-                this.signature.addException(new TypeFill(Type.getObjectType(exe)));
+            if(exceptions != null) {
+                for (String exe : exceptions) {
+                    this.signature.addException(new TypeFill(Type.getObjectType(exe)));
+                }
             }
         }
 

@@ -28,10 +28,15 @@ import org.objectweb.asm.Opcodes;
 import org.objectweb.asm.Type;
 import org.objectweb.asm.signature.SignatureVisitor;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * A {@link SignatureVisitor} which builds a {@link MethodSignature}.
  */
 public class MethodSignatureVisitor extends SignatureVisitor implements Opcodes {
+    private List<TypeSignatureVisitor> visitors;
+
     private MethodSignature signature;
     private TypeVar previous;
 
@@ -41,6 +46,7 @@ public class MethodSignatureVisitor extends SignatureVisitor implements Opcodes 
     public MethodSignatureVisitor() {
         super(ASM5);
         this.signature = new MethodSignature(new TypeFill(Type.getType(void.class)));
+        this.visitors = new ArrayList<>();
     }
 
     @Override
@@ -51,27 +57,40 @@ public class MethodSignatureVisitor extends SignatureVisitor implements Opcodes 
 
     @Override
     public SignatureVisitor visitClassBound() {
-        return new TypeSignatureVisitor(f -> this.previous.setClassBound(f));
+        return this.logAndReturn(new TypeSignatureVisitor(f -> this.previous.setClassBound(f)));
     }
 
     @Override
     public SignatureVisitor visitInterfaceBound() {
-        return new TypeSignatureVisitor(f -> this.previous.addInterBound(f));
+        return this.logAndReturn(new TypeSignatureVisitor(f -> this.previous.addInterBound(f)));
     }
 
     @Override
     public SignatureVisitor visitParameterType() {
-        return new TypeSignatureVisitor(f -> this.signature.addParameter(f));
+        return this.logAndReturn(new TypeSignatureVisitor(f -> this.signature.addParameter(f)));
     }
 
     @Override
     public SignatureVisitor visitReturnType() {
-        return new TypeSignatureVisitor(f -> this.signature.setReturn(f));
+        return this.logAndReturn(new TypeSignatureVisitor(f -> this.signature.setReturn(f)));
     }
 
     @Override
     public SignatureVisitor visitExceptionType() {
-        return new TypeSignatureVisitor(f -> this.signature.addException(f));
+        return this.logAndReturn(new TypeSignatureVisitor(f -> this.signature.addException(f)));
+    }
+
+    @Override
+    public void visitEnd() {
+        while (!this.visitors.isEmpty()) {
+            this.visitors.remove(0).visitFinish();
+        }
+        super.visitEnd();
+    }
+
+    private TypeSignatureVisitor logAndReturn(TypeSignatureVisitor visitor) {
+        this.visitors.add(visitor);
+        return visitor;
     }
 
     /**

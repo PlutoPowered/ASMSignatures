@@ -121,7 +121,7 @@ public class Signatures {
         TypeSignatureVisitor visitor = new TypeSignatureVisitor();
         SignatureReader reader = new SignatureReader(signature);
         reader.accept(visitor);
-        visitor.visitEnd();
+        visitor.visitFinish();
 
         return visitor.getSignature();
     }
