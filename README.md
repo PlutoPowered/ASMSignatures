@@ -20,7 +20,7 @@ repositories {
 }
 
 dependencies {
-    compile "com.github.PlutoPowered:ASMSignatures:0.0.1"
+    compile "com.github.PlutoPowered:ASMSignatures:master-SNAPSHOT"
 }
 
 configurations.all {
