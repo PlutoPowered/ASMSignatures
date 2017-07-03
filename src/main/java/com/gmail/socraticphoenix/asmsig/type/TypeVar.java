@@ -25,6 +25,7 @@ import org.objectweb.asm.Type;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * Represents a formal type parameter in a method signature or a class signature.
@@ -103,4 +104,20 @@ public class TypeVar implements TypeSignaturePart {
         }
         return k.toString();
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        TypeVar typeVar = (TypeVar) o;
+        return Objects.equals(name, typeVar.name) &&
+                Objects.equals(classBound, typeVar.classBound) &&
+                Objects.equals(interBound, typeVar.interBound);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(name, classBound, interBound);
+    }
+
 }

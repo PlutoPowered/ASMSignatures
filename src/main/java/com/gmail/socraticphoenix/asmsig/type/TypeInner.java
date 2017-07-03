@@ -23,6 +23,8 @@ package com.gmail.socraticphoenix.asmsig.type;
 
 import org.objectweb.asm.Type;
 
+import java.util.Objects;
+
 /**
  * Represents some an inner class, with some outer class.
  */
@@ -60,4 +62,18 @@ public class TypeInner extends TypeFill implements TypeInformal {
     public String write() {
         return this.outer.write() + "." + super.write();
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        TypeInner typeInner = (TypeInner) o;
+        return Objects.equals(outer, typeInner.outer);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(outer);
+    }
+
 }

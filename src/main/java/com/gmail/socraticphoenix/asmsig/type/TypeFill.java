@@ -26,6 +26,7 @@ import org.objectweb.asm.Type;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * Represents a type with zero or more type arguments, as in, it is a type with formal type parameters that have been
@@ -97,6 +98,20 @@ public class TypeFill implements TypeInformal {
             k.append(">");
         }
         return k.append(Signatures.writeEnd(this.type)).toString();
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        TypeFill typeFill = (TypeFill) o;
+        return Objects.equals(type, typeFill.type) &&
+                Objects.equals(fill, typeFill.fill);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(type, fill);
     }
 
 }

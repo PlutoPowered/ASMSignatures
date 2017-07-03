@@ -21,6 +21,8 @@
  */
 package com.gmail.socraticphoenix.asmsig.type;
 
+import java.util.Objects;
+
 /**
  * Represents a wildcard type with an upper and lower bound. If no lower bound exists, it will be null, and if no upper
  * bound exists, it will be {@link Object}.
@@ -81,6 +83,20 @@ public class TypeWild implements TypeSignaturePart, TypeInformal {
         } else {
             return "*";
         }
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        TypeWild typeWild = (TypeWild) o;
+        return Objects.equals(upper, typeWild.upper) &&
+                Objects.equals(lower, typeWild.lower);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(upper, lower);
     }
 
 }

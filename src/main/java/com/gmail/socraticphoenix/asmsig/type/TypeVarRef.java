@@ -21,6 +21,8 @@
  */
 package com.gmail.socraticphoenix.asmsig.type;
 
+import java.util.Objects;
+
 /**
  * Represents a reference to a formal type parameter in either a method signature or class signature.
  */
@@ -55,6 +57,19 @@ public class TypeVarRef implements TypeSignaturePart, TypeInformal {
     @Override
     public String write() {
         return "T" + this.name + ";";
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        TypeVarRef ref = (TypeVarRef) o;
+        return Objects.equals(name, ref.name);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(name);
     }
 
 }

@@ -26,6 +26,7 @@ import com.gmail.socraticphoenix.asmsig.type.TypeVar;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * Represents a method signature. Specifically, a method signature represents:
@@ -135,6 +136,22 @@ public class MethodSignature {
      */
     public void addException(TypeInformal except) {
         this.exceptions.add(except);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        MethodSignature signature = (MethodSignature) o;
+        return Objects.equals(generics, signature.generics) &&
+                Objects.equals(paras, signature.paras) &&
+                Objects.equals(ret, signature.ret) &&
+                Objects.equals(exceptions, signature.exceptions);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(generics, paras, ret, exceptions);
     }
 
 }

@@ -27,6 +27,7 @@ import org.objectweb.asm.Type;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * Represents a class signature. Specifically a class signature represents:
@@ -120,6 +121,21 @@ public class ClassSignature {
      */
     public void addInterface(TypeFill inter) {
         this.interfaces.add(inter);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        ClassSignature signature = (ClassSignature) o;
+        return Objects.equals(type, signature.type) &&
+                Objects.equals(superclass, signature.superclass) &&
+                Objects.equals(interfaces, signature.interfaces);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(type, superclass, interfaces);
     }
 
 }

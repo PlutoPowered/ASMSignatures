@@ -21,6 +21,8 @@
  */
 package com.gmail.socraticphoenix.asmsig.type;
 
+import java.util.Objects;
+
 /**
  * Represents an array type.
  */
@@ -92,6 +94,19 @@ public class TypeArray implements TypeInformal, TypeSignaturePart {
     @Override
     public String write() {
         return "[" + this.type.write();
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        TypeArray array = (TypeArray) o;
+        return Objects.equals(type, array.type);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(type);
     }
 
 }

@@ -23,6 +23,7 @@ package com.gmail.socraticphoenix.asmsig.type;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import com.gmail.socraticphoenix.asmsig.Signatures;
 import org.objectweb.asm.Type;
@@ -98,6 +99,20 @@ public class TypeParameterized implements TypeSignaturePart {
             k.append(">");
         }
         return k.append(Signatures.writeEnd(this.type)).toString();
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        TypeParameterized that = (TypeParameterized) o;
+        return Objects.equals(type, that.type) &&
+                Objects.equals(paras, that.paras);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(type, paras);
     }
 
 }
