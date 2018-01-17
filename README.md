@@ -23,8 +23,4 @@ dependencies {
     compile "com.github.PlutoPowered:ASMSignatures:master-SNAPSHOT"
 }
 
-configurations.all {
-    resolutionStrategy.cacheChangingModulesFor 0, 'seconds'
-}
-
 ```
