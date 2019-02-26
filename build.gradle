@@ -10,7 +10,7 @@ apply plugin : 'idea'
 //End Plugins
 
 //Program Specific Variables
-def programVersion = "0.0.1"
+def programVersion = "0.0.0"
 def programGroup = "com.gmail.socraticphoenix"
 //End Variables
 
@@ -20,13 +20,24 @@ version = "$programVersion"
 sourceCompatibility = 1.8
 //End Gradle Variables
 
+configurations {
+    library
+    compile.extendsFrom library
+    runtime.extendsFrom library
+}
+
 //Repositories and Dependencies
 repositories {
     mavenCentral()
+
+    maven {
+        name "jitpack.io"
+        url "https://jitpack.io"
+    }
 }
 
 dependencies {
-    compile "org.ow2.asm:asm-debug-all:5.2"
+    library "org.ow2.asm:asm-debug-all:5.2"
 }
 //End Repositories and Dependencies
 
@@ -49,3 +60,10 @@ shadowJar {
     classifier = "shadow"
 }
 //End Tasks
+
+//Configurations
+configurations.all {
+    resolutionStrategy.cacheChangingModulesFor 0, 'seconds'
+}
+//End configurations
+
