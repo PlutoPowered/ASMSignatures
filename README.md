@@ -20,7 +20,7 @@ repositories {
 }
 
 dependencies {
-    compile "com.github.PlutoPowered:ASMSignatures:master-SNAPSHOT"
+    compile "com.github.SocraticPhoenix:ASMSignatures:master-SNAPSHOT"
 }
 
 ```
