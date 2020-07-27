@@ -22,6 +22,9 @@
 package com.gmail.socraticphoenix.asmsig.type;
 
 import com.gmail.socraticphoenix.asmsig.Signatures;
+import org.objectweb.asm.Type;
+
+import java.util.function.Function;
 
 /**
  * Represents an element of a signature or an element of an element of a signature. All TypeSignatureParts are mutable
@@ -34,6 +37,14 @@ public interface TypeSignaturePart {
      * @return The formatted signature part, as it would appear in bytecode.
      */
     String write();
+
+    /**
+     * Maps the Types contained by this signature part
+     *
+     * @param mapper The mapper to use
+     * @return A mapped signature part
+     */
+    TypeSignaturePart map(Function<Type, Type> mapper);
 
     /**
      * @return True if this is a primitive type, false otherwise.

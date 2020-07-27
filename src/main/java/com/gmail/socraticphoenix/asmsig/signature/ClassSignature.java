@@ -28,6 +28,7 @@ import org.objectweb.asm.Type;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.function.Function;
 
 /**
  * Represents a class signature. Specifically a class signature represents:
@@ -54,6 +55,12 @@ public class ClassSignature {
         this.type = type;
         this.superclass = superclass;
         this.interfaces = new ArrayList<>();
+    }
+
+    public ClassSignature map(Function<Type, Type> mapper) {
+        ClassSignature signature = new ClassSignature(this.type.map(mapper), this.superclass.map(mapper));
+        this.interfaces.forEach(t -> signature.addInterface(t.map(mapper)));
+        return signature;
     }
 
     /**

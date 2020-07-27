@@ -21,10 +21,17 @@
  */
 package com.gmail.socraticphoenix.asmsig.type;
 
+import org.objectweb.asm.Type;
+
+import java.util.function.Function;
+
 /**
  * Marker interface for any types that may not contain formal parameters, and is not a formal parameter. Put simply, a TypeInformal is any type which
  * is not a {@link TypeParameterized} or a {@link TypeVar}.
  */
 public interface TypeInformal extends TypeSignaturePart {
+
+    @Override
+    TypeInformal map(Function<Type, Type> mapper);
 
 }

@@ -21,10 +21,10 @@
  */
 package com.gmail.socraticphoenix.asmsig.builder;
 
-import com.gmail.socraticphoenix.asmsig.Signatures;
 import com.gmail.socraticphoenix.asmsig.signature.ClassSignature;
-import com.gmail.socraticphoenix.asmsig.type.TypeFill;
 import com.gmail.socraticphoenix.asmsig.type.TypeParameterized;
+import com.gmail.socraticphoenix.asmsig.Signatures;
+import com.gmail.socraticphoenix.asmsig.type.TypeFill;
 import org.objectweb.asm.Type;
 
 /**

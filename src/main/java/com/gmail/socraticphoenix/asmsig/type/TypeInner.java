@@ -24,6 +24,7 @@ package com.gmail.socraticphoenix.asmsig.type;
 import org.objectweb.asm.Type;
 
 import java.util.Objects;
+import java.util.function.Function;
 
 /**
  * Represents some an inner class, with some outer class.
@@ -40,6 +41,13 @@ public class TypeInner extends TypeFill implements TypeInformal {
     public TypeInner(Type type, TypeFill outer) {
         super(type);
         this.outer = outer;
+    }
+
+    @Override
+    public TypeInner map(Function<Type, Type> mapper) {
+        TypeInner type = new TypeInner(mapper.apply(this.getType()), this.outer.map(mapper));
+        this.getFill().forEach(t -> type.addPart(t.map(mapper)));
+        return type;
     }
 
     /**

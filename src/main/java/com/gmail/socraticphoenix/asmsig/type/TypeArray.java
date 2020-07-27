@@ -21,7 +21,10 @@
  */
 package com.gmail.socraticphoenix.asmsig.type;
 
+import org.objectweb.asm.Type;
+
 import java.util.Objects;
+import java.util.function.Function;
 
 /**
  * Represents an array type.
@@ -94,6 +97,11 @@ public class TypeArray implements TypeInformal, TypeSignaturePart {
     @Override
     public String write() {
         return "[" + this.type.write();
+    }
+
+    @Override
+    public TypeArray map(Function<Type, Type> mapper) {
+        return new TypeArray(this.type.map(mapper));
     }
 
     @Override

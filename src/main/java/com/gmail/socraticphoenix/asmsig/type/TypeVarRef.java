@@ -21,7 +21,10 @@
  */
 package com.gmail.socraticphoenix.asmsig.type;
 
+import org.objectweb.asm.Type;
+
 import java.util.Objects;
+import java.util.function.Function;
 
 /**
  * Represents a reference to a formal type parameter in either a method signature or class signature.
@@ -72,4 +75,8 @@ public class TypeVarRef implements TypeSignaturePart, TypeInformal {
         return Objects.hash(name);
     }
 
+    @Override
+    public TypeVarRef map(Function<Type, Type> mapper) {
+        return new TypeVarRef(this.name);
+    }
 }

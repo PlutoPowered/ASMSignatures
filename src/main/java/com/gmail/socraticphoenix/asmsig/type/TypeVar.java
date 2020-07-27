@@ -26,6 +26,7 @@ import org.objectweb.asm.Type;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.function.Function;
 
 /**
  * Represents a formal type parameter in a method signature or a class signature.
@@ -44,6 +45,14 @@ public class TypeVar implements TypeSignaturePart {
         this.name = name;
         this.classBound = new TypeFill(Type.getType(Object.class));
         this.interBound = new ArrayList<>();
+    }
+
+    @Override
+    public TypeVar map(Function<Type, Type> mapper) {
+        TypeVar type = new TypeVar(this.name);
+        type.setClassBound(this.classBound.map(mapper));
+        this.getInterBound().forEach(t -> type.addInterBound(t.map(mapper)));
+        return type;
     }
 
     /**

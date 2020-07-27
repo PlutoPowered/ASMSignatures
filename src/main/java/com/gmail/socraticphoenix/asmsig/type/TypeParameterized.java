@@ -24,6 +24,7 @@ package com.gmail.socraticphoenix.asmsig.type;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.function.Function;
 
 import com.gmail.socraticphoenix.asmsig.Signatures;
 import org.objectweb.asm.Type;
@@ -99,6 +100,13 @@ public class TypeParameterized implements TypeSignaturePart {
             k.append(">");
         }
         return k.append(Signatures.writeEnd(this.type)).toString();
+    }
+
+    @Override
+    public TypeParameterized map(Function<Type, Type> mapper) {
+        TypeParameterized type = new TypeParameterized(mapper.apply(this.type));
+        this.paras.forEach(t -> type.addParameter(t.map(mapper)));
+        return type;
     }
 
     @Override

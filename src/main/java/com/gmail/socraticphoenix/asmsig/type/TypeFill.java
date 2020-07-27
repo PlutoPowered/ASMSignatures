@@ -27,6 +27,7 @@ import org.objectweb.asm.Type;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.function.Function;
 
 /**
  * Represents a type with zero or more type arguments, as in, it is a type with formal type parameters that have been
@@ -114,4 +115,10 @@ public class TypeFill implements TypeInformal {
         return Objects.hash(type, fill);
     }
 
+    @Override
+    public TypeFill map(Function<Type, Type> mapper) {
+        TypeFill type = new TypeFill(mapper.apply(this.type));
+        this.fill.forEach(t -> type.addPart(t.map(mapper)));
+        return type;
+    }
 }

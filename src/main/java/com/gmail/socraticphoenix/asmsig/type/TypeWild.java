@@ -21,7 +21,10 @@
  */
 package com.gmail.socraticphoenix.asmsig.type;
 
+import org.objectweb.asm.Type;
+
 import java.util.Objects;
+import java.util.function.Function;
 
 /**
  * Represents a wildcard type with an upper and lower bound. If no lower bound exists, it will be null, and if no upper
@@ -99,4 +102,9 @@ public class TypeWild implements TypeSignaturePart, TypeInformal {
         return Objects.hash(upper, lower);
     }
 
+    @Override
+    public TypeWild map(Function<Type, Type> mapper) {
+        return new TypeWild(this.upper != null ? this.upper.map(mapper) : null,
+                this.lower != null ? this.lower.map(mapper) : null);
+    }
 }

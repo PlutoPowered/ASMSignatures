@@ -23,10 +23,12 @@ package com.gmail.socraticphoenix.asmsig.signature;
 
 import com.gmail.socraticphoenix.asmsig.type.TypeInformal;
 import com.gmail.socraticphoenix.asmsig.type.TypeVar;
+import org.objectweb.asm.Type;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.function.Function;
 
 /**
  * Represents a method signature. Specifically, a method signature represents:
@@ -53,6 +55,14 @@ public class MethodSignature {
         this.generics = new ArrayList<>();
         this.paras = new ArrayList<>();
         this.exceptions = new ArrayList<>();
+    }
+
+    public MethodSignature map(Function<Type, Type> mapper) {
+        MethodSignature signature = new MethodSignature(this.ret.map(mapper));
+        this.generics.forEach(t -> signature.addGeneric(t.map(mapper)));
+        this.paras.forEach(t -> signature.addParameter(t.map(mapper)));
+        this.exceptions.forEach(t -> signature.addException(t.map(mapper)));
+        return signature;
     }
 
     /**

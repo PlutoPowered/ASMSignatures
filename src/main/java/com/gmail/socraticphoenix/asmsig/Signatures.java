@@ -26,10 +26,10 @@ import com.gmail.socraticphoenix.asmsig.builder.MethodSignatureBuilder;
 import com.gmail.socraticphoenix.asmsig.builder.TypeSignatureBuilder;
 import com.gmail.socraticphoenix.asmsig.signature.ClassSignature;
 import com.gmail.socraticphoenix.asmsig.signature.MethodSignature;
-import com.gmail.socraticphoenix.asmsig.type.TypeInformal;
 import com.gmail.socraticphoenix.asmsig.visitor.ClassSignatureVisitor;
 import com.gmail.socraticphoenix.asmsig.visitor.MethodSignatureVisitor;
 import com.gmail.socraticphoenix.asmsig.visitor.TypeSignatureVisitor;
+import com.gmail.socraticphoenix.asmsig.type.TypeInformal;
 import org.objectweb.asm.Type;
 import org.objectweb.asm.signature.SignatureReader;
 
